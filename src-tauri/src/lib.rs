@@ -1,43 +1,7 @@
-// Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-use tauri::Emitter;
-
-#[tauri::command]
-fn greet(name: &str) -> String {
-    format!("Hello, {}! You've been greeted from Rust!", name)
-}
-
 pub mod apps;
+mod commands;
 
-#[tauri::command]
-fn scan_apps() -> Vec<apps::AppRecord> {
-    apps::scan_apps()
-}
-
-#[tauri::command]
-fn get_audit_overview() -> apps::AuditOverview {
-    apps::audit_overview()
-}
-
-#[tauri::command]
-fn measure_audit_folder_size(kind: String, folder: String) -> u64 {
-    apps::measure_folder_size(&kind, &folder)
-}
-
-#[tauri::command]
-async fn start_scan_apps(app: tauri::AppHandle) -> Result<(), String> {
-    tauri::async_runtime::spawn_blocking(move || {
-        apps::scan_apps_stream(
-            |p| {
-                let _ = app.emit("scan_progress", p);
-            },
-            |r| {
-                let _ = app.emit("scan_result", r);
-            },
-        );
-        let _ = app.emit("scan_done", ());
-    });
-    Ok(())
-}
+use commands::{get_audit_overview, greet, measure_audit_folder_size, scan_apps, start_scan_apps};
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
