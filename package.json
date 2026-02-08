@@ -1,7 +1,9 @@
 {
   "name": "app-manager",
-  "private": true,
   "version": "0.1.0",
+  "description": "A lightweight and elegant Windows desktop tool for analyzing software disk space usage.",
+  "author": "AppManager Contributors",
+  "license": "MIT",
   "type": "module",
   "scripts": {
     "dev": "vite",

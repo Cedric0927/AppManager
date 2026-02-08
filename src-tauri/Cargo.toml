@@ -1,8 +1,9 @@
 [package]
 name = "appmanager"
 version = "0.1.0"
-description = "AppManager"
-authors = ["you"]
+description = "A lightweight and elegant Windows desktop tool for analyzing software disk space usage."
+authors = ["AppManager Contributors"]
+license = "MIT"
 edition = "2021"
 default-run = "appmanager"
 
