@@ -2,6 +2,8 @@
 
 一款小巧、精致、高性能的 Windows 桌面工具，旨在帮助用户深度分析并可视化展示电脑软件的实际空间占用。
 
+**如果你看到这个项目了，点个star吧，求求了~这是我唯一想更新的动力~**
+
 ![AppManager](https://img.shields.io/badge/Platform-Windows-blue)
 ![License](https://img.shields.io/badge/License-MIT-green)
 ![Tauri](https://img.shields.io/badge/Framework-Tauri_v2-orange)
