@@ -12,6 +12,11 @@ pub fn scan_apps() -> Vec<apps::AppRecord> {
 }
 
 #[tauri::command]
+pub fn get_disk_info() -> Vec<apps::DiskInfo> {
+    apps::get_disk_info()
+}
+
+#[tauri::command]
 pub fn get_audit_overview() -> apps::AuditOverview {
     apps::audit_overview()
 }

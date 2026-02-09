@@ -59,8 +59,28 @@ pub struct AuditOverview {
     pub unassigned_folders: Vec<AuditUnassignedFolder>,
 }
 
+#[derive(serde::Serialize, Clone)]
+#[serde(rename_all = "camelCase")]
+pub struct DiskInfo {
+    pub name: String,
+    pub mount_point: String,
+    pub total_space: u64,
+    pub available_space: u64,
+    pub is_removable: bool,
+}
+
 #[cfg(windows)]
 mod windows;
+
+pub fn get_disk_info() -> Vec<DiskInfo> {
+    #[cfg(windows)]
+    {
+        return windows::get_disk_info_windows();
+    }
+
+    #[cfg(not(windows))]
+    Vec::new()
+}
 
 pub fn scan_apps() -> Vec<AppRecord> {
     #[cfg(windows)]

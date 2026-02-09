@@ -1,7 +1,9 @@
 pub mod apps;
 mod commands;
 
-use commands::{get_audit_overview, greet, measure_audit_folder_size, scan_apps, start_scan_apps};
+use commands::{
+    get_audit_overview, get_disk_info, greet, measure_audit_folder_size, scan_apps, start_scan_apps,
+};
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -10,6 +12,7 @@ pub fn run() {
         .invoke_handler(tauri::generate_handler![
             greet,
             scan_apps,
+            get_disk_info,
             start_scan_apps,
             get_audit_overview,
             measure_audit_folder_size

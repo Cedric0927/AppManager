@@ -9,6 +9,21 @@ mod roots;
 mod sizing;
 mod uninstall;
 
+pub(super) fn get_disk_info_windows() -> Vec<super::DiskInfo> {
+    use sysinfo::Disks;
+    let disks = Disks::new_with_refreshed_list();
+    disks
+        .iter()
+        .map(|d| super::DiskInfo {
+            name: d.name().to_string_lossy().to_string(),
+            mount_point: d.mount_point().to_string_lossy().to_string(),
+            total_space: d.total_space(),
+            available_space: d.available_space(),
+            is_removable: d.is_removable(),
+        })
+        .collect()
+}
+
 pub(super) fn audit_overview_windows() -> super::AuditOverview {
     audit::audit_overview_windows()
 }
@@ -38,7 +53,7 @@ pub(super) fn scan_apps_stream_windows<FProgress, FRecord>(
         phase: "uninstall".into(),
         current: 0,
         total: uninstall.len() as u32,
-        message: "已读取已安装软件清单".into(),
+        message: "已识别安装软件列表".into(),
     });
 
     let roots = roots::build_roots();
@@ -54,7 +69,7 @@ pub(super) fn scan_apps_stream_windows<FProgress, FRecord>(
             phase: "scan".into(),
             current: (i as u32).saturating_add(1),
             total,
-            message: "正在归因占用…".into(),
+            message: "正在分析占用细节…".into(),
         });
     }
 
@@ -77,11 +92,11 @@ fn enrich_with_breakdown(
         (
             uninstall.estimated_bytes,
             Vec::new(),
-            "程序本身（注册表估算）".to_string(),
+            "软件程序 (系统估算)".to_string(),
         )
     } else {
         let (bytes, paths) = sizing::compute_install_bytes(&uninstall, size_cache);
-        (bytes, paths, "程序本身（安装目录扫描）".to_string())
+        (bytes, paths, "软件程序 (目录扫描)".to_string())
     };
 
     breakdown.push(AppBreakdownEntry {
@@ -96,7 +111,7 @@ fn enrich_with_breakdown(
         if bytes > 0 {
             breakdown.push(AppBreakdownEntry {
                 kind: "appDataLocal".into(),
-                label: "数据（AppData\\Local）".into(),
+                label: "应用数据 (AppData/Local)".into(),
                 bytes,
                 paths: shown,
             });
@@ -108,7 +123,7 @@ fn enrich_with_breakdown(
         if bytes > 0 {
             breakdown.push(AppBreakdownEntry {
                 kind: "appDataRoaming".into(),
-                label: "数据（AppData\\Roaming）".into(),
+                label: "应用数据 (AppData/Roaming)".into(),
                 bytes,
                 paths: shown,
             });
@@ -120,7 +135,7 @@ fn enrich_with_breakdown(
         if bytes > 0 {
             breakdown.push(AppBreakdownEntry {
                 kind: "appDataLocalLow".into(),
-                label: "数据（AppData\\LocalLow）".into(),
+                label: "应用数据 (AppData/LocalLow)".into(),
                 bytes,
                 paths: shown,
             });
@@ -132,7 +147,7 @@ fn enrich_with_breakdown(
         if bytes > 0 {
             breakdown.push(AppBreakdownEntry {
                 kind: "programData".into(),
-                label: "数据（ProgramData）".into(),
+                label: "共享数据 (ProgramData)".into(),
                 bytes,
                 paths: shown,
             });

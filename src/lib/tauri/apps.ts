@@ -1,8 +1,12 @@
 import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
-import type { AppRecord, AuditOverview, ScanProgress } from "../../types/apps";
+import type { AppRecord, AuditOverview, DiskInfo, ScanProgress } from "../../types/apps";
 
 export type Unlisten = () => void;
+
+export async function getDiskInfo(): Promise<DiskInfo[]> {
+  return (await invoke("get_disk_info")) as DiskInfo[];
+}
 
 export async function startScanApps(): Promise<void> {
   await invoke("start_scan_apps");

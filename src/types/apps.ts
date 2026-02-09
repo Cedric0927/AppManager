@@ -44,3 +44,11 @@ export type AuditOverview = {
   duplicateInstallLocations: AuditDuplicateInstallLocation[];
   unassignedFolders: AuditUnassignedFolder[];
 };
+
+export type DiskInfo = {
+  name: string;
+  mountPoint: string;
+  totalSpace: number;
+  availableSpace: number;
+  isRemovable: boolean;
+};
