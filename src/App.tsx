@@ -62,7 +62,7 @@ function App() {
             <div className="flex flex-col">
               <div className="text-xl font-semibold tracking-tight">AppManager</div>
               <div className="text-sm text-zinc-400">
-                扫描并分析软件及其关联数据占用的磁盘空间
+                好看、小巧、好用的磁盘分析工具。让你的C盘不再爆红。
               </div>
             </div>
           </div>
